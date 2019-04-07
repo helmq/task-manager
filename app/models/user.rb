@@ -4,5 +4,5 @@ class User < ApplicationRecord
   has_many :assigned_tasks, class_name: 'Task', foreign_key: 'asignee_id'
   validates :first_name, presence: true, length: { minimum: 2 }
   validates :last_name, presence: true, length: { minimum: 2 }
-  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: /@/ }
 end
