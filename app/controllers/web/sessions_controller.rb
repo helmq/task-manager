@@ -16,7 +16,7 @@ class Web::SessionsController < Web::ApplicationController
 
   def destroy
     sign_out
-    redirect to :new_session
+    redirect_to :new_session
   end
 
   private

@@ -7,7 +7,7 @@ class Web::DevelopersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should post create' do
-    post developer_url, params: { developer: attributes_for(:developer) }
+    post developers_url, params: { developer: attributes_for(:developer) }
     assert_response :redirect
   end
 end
