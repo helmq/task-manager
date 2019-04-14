@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.5.3
 
 RUN mkdir -p /task_manager
 WORKDIR /task_manager
