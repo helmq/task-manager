@@ -1,6 +1,6 @@
 class Task < ApplicationRecord
-  belongs_to :author, class_name: 'User'
-  belongs_to :assignee, class_name: 'User', optional: true
+  belongs_to :author, class_name: 'User', inverse_of: :my_tasks
+  belongs_to :assignee, class_name: 'User', optional: true, inverse_of: :assigned_tasks
   validates :name, presence: true
   validates :description, presence: true
   validates :author, presence: true
