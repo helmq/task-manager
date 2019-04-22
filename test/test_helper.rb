@@ -19,5 +19,9 @@ end
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
+  include Concerns::AuthHelper
+end
+
+class ActionDispatch::IntegrationTest
   include SignInHelper
 end
