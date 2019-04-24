@@ -1,24 +1,3 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Task Manager
+[![Build Status](https://travis-ci.org/helmq/task-manager.svg?branch=feature%2Fdevops)](https://travis-ci.org/helmq/task-manager)
+[![Coverage Status](https://coveralls.io/repos/github/helmq/task-manager/badge.svg?branch=feature%2Fcoveralls)](https://coveralls.io/github/helmq/task-manager?branch=feature%2Fcoveralls)
