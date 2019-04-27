@@ -2,7 +2,8 @@ env:
   browser: true
 
 extends:
-  - "airbnb-base"
+  - airbnb
 
 rules:
   no-console: 0
+  import/no-unresolved: 0
