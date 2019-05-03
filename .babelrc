@@ -1,17 +1,17 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "modules": false,
         "targets": {
           "browsers": "> 1%",
           "uglify": true
         },
-        "useBuiltIns": true
+        "useBuiltIns": "entry"
       }
     ],
-    "react"
+    "@babel/react"
   ],
   "plugins": [
     "syntax-dynamic-import",
@@ -21,6 +21,7 @@
       {
         "spec": true
       }
-    ]
+    ],
+    "@babel/plugin-proposal-class-properties"
   ]
 }
