@@ -1,7 +1,9 @@
 import React from 'react';
 import Board from 'react-trello';
+import { Button } from 'react-bootstrap';
 import { fetch } from '../fetch';
 import LaneHeader from './LaneHeader';
+import AddPopup from './AddPopup';
 
 export default class TaskBoard extends React.Component {
   state = {
@@ -23,6 +25,7 @@ export default class TaskBoard extends React.Component {
       released: 'release',
       archived: 'archive',
     },
+    addPopupShow: false,
   };
 
   componentDidMount() {
@@ -74,6 +77,17 @@ export default class TaskBoard extends React.Component {
     });
   };
 
+  handleAddShow = () => {
+    this.setState({ addPopupShow: true });
+  };
+
+  handleAddClose = (added = false) => {
+    this.setState({ addPopupShow: false });
+    if (added === true) {
+      this.loadLine('new_task');
+    }
+  };
+
   async loadLine(state, page = 1) {
     const data = await this.fetchLine(state, page);
     this.setState(({ board }) => ({
@@ -113,9 +127,13 @@ export default class TaskBoard extends React.Component {
   }
 
   render() {
+    const { addPopupShow } = this.state;
     return (
       <div>
         <h1>Your tasks</h1>
+        <Button variant="primary" onClick={this.handleAddShow}>
+          Create new task
+        </Button>
         <Board
           data={this.getBoard()}
           onLaneScroll={this.onLaneScroll}
@@ -124,6 +142,7 @@ export default class TaskBoard extends React.Component {
           laneDraggable={false}
           handleDragEnd={this.handleDragEnd}
         />
+        <AddPopup show={addPopupShow} onClose={this.handleAddClose} />
       </div>
     );
   }
