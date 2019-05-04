@@ -11,7 +11,7 @@
         "useBuiltIns": "entry"
       }
     ],
-    "@babel/react"
+    "@babel/preset-react"
   ],
   "plugins": [
     "syntax-dynamic-import",
