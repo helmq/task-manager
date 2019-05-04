@@ -1,6 +1,7 @@
 import React from 'react';
 import Board from 'react-trello';
 import { fetch } from '../fetch';
+import LaneHeader from './LaneHeader';
 
 export default class TaskBoard extends React.Component {
   state = {
@@ -43,15 +44,14 @@ export default class TaskBoard extends React.Component {
     }),
   ).then(({ data }) => data);
 
-  loadLines() {
-    this.loadLine('new_task');
-    this.loadLine('in_development');
-    this.loadLine('in_qa');
-    this.loadLine('in_code_review');
-    this.loadLine('ready_for_release');
-    this.loadLine('released');
-    this.loadLine('archived');
-  }
+  onLaneScroll = async (requestedPage, state) => {
+    const { items } = await this.fetchLine(state, requestedPage);
+    return items.map(task => ({
+      ...task,
+      label: task.state,
+      title: task.name,
+    }));
+  };
 
   async loadLine(state, page = 1) {
     const data = await this.fetchLine(state, page);
@@ -81,11 +81,25 @@ export default class TaskBoard extends React.Component {
     };
   }
 
+  loadLines() {
+    this.loadLine('new_task');
+    this.loadLine('in_development');
+    this.loadLine('in_qa');
+    this.loadLine('in_code_review');
+    this.loadLine('ready_for_release');
+    this.loadLine('released');
+    this.loadLine('archived');
+  }
+
   render() {
     return (
       <div>
         <h1>Your tasks</h1>
-        <Board data={this.getBoard()} />
+        <Board
+          data={this.getBoard()}
+          onLaneScroll={this.onLaneScroll}
+          customLaneHeader={<LaneHeader />}
+        />
       </div>
     );
   }
