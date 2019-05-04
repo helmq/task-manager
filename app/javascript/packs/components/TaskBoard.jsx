@@ -14,6 +14,15 @@ export default class TaskBoard extends React.Component {
       released: null,
       archived: null,
     },
+    events: {
+      new_task: null,
+      in_development: 'develop',
+      in_qa: 'qa',
+      in_code_review: 'review',
+      ready_for_release: 'ready',
+      released: 'release',
+      archived: 'archive',
+    },
   };
 
   componentDidMount() {
@@ -51,6 +60,18 @@ export default class TaskBoard extends React.Component {
       label: task.state,
       title: task.name,
     }));
+  };
+
+  handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
+    const { events } = this.state;
+    const event = events[targetLaneId];
+
+    fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+      task: { state_event: event },
+    }).finally(() => {
+      this.loadLine(sourceLaneId);
+      this.loadLine(targetLaneId);
+    });
   };
 
   async loadLine(state, page = 1) {
@@ -99,6 +120,9 @@ export default class TaskBoard extends React.Component {
           data={this.getBoard()}
           onLaneScroll={this.onLaneScroll}
           customLaneHeader={<LaneHeader />}
+          draggable
+          laneDraggable={false}
+          handleDragEnd={this.handleDragEnd}
         />
       </div>
     );
