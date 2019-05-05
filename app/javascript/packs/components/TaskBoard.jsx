@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import { fetch } from '../fetch';
 import LaneHeader from './LaneHeader';
 import AddPopup from './AddPopup';
+import EditPopup from './EditPopup';
 
 export default class TaskBoard extends React.Component {
   state = {
@@ -26,6 +27,8 @@ export default class TaskBoard extends React.Component {
       archived: 'archive',
     },
     addPopupShow: false,
+    editPopupShow: false,
+    editCardId: null,
   };
 
   componentDidMount() {
@@ -90,6 +93,32 @@ export default class TaskBoard extends React.Component {
     }
   };
 
+  onCardClick = cardId => {
+    this.setState({ editCardId: cardId });
+    this.handleEditShow();
+  };
+
+  handleEditClose = (edited = '') => {
+    this.setState({ editPopupShow: false, editCardId: null });
+    switch (edited) {
+      case 'new_task':
+      case 'in_development':
+      case 'in_qa':
+      case 'in_code_review':
+      case 'ready_for_release':
+      case 'released':
+      case 'archived':
+        this.loadLine(edited);
+        break;
+      default:
+        break;
+    }
+  };
+
+  handleEditShow = () => {
+    this.setState({ editPopupShow: true });
+  };
+
   async loadLine(state, page = 1) {
     const data = await this.fetchLine(state, page);
 
@@ -130,22 +159,29 @@ export default class TaskBoard extends React.Component {
   }
 
   render() {
-    const { addPopupShow } = this.state;
+    const { addPopupShow, editPopupShow, editCardId } = this.state;
     return (
       <div>
-        <h1>Your tasks</h1>
-        <Button variant="primary" onClick={this.handleAddShow}>
-          Create new task
-        </Button>
-        <Board
-          data={this.getBoard()}
-          onLaneScroll={this.onLaneScroll}
-          customLaneHeader={<LaneHeader />}
-          draggable
-          laneDraggable={false}
-          handleDragEnd={this.handleDragEnd}
-        />
-        <AddPopup show={addPopupShow} onClose={this.handleAddClose} />
+        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+          <h3>Your tasks</h3>
+          <Button variant="primary" onClick={this.handleAddShow}>
+            Create new task
+          </Button>
+        </div>
+
+        <div>
+          <Board
+            data={this.getBoard()}
+            onLaneScroll={this.onLaneScroll}
+            customLaneHeader={<LaneHeader />}
+            draggable
+            laneDraggable={false}
+            handleDragEnd={this.handleDragEnd}
+            onCardClick={this.onCardClick}
+          />
+          <EditPopup show={editPopupShow} onClose={this.handleEditClose} cardId={editCardId} />
+          <AddPopup show={addPopupShow} onClose={this.handleAddClose} />
+        </div>
       </div>
     );
   }
