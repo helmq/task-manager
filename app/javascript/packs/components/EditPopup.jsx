@@ -34,13 +34,19 @@ export default class EditPopup extends React.Component {
     }
   }
 
-  loadCard = cardId => {
+  loadCard = async cardId => {
     this.setState({ isLoading: true });
 
-    fetch('GET', window.Routes.api_v1_task_path(cardId, { format: 'json' })).then(({ data }) => {
+    try {
+      const { data } = await fetch(
+        'GET',
+        window.Routes.api_v1_task_path(cardId, { format: 'json' }),
+      );
       this.setState({ task: data });
       this.setState({ isLoading: false });
-    });
+    } catch (e) {
+      alert(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+    }
   };
 
   handleNameChange = e => {
@@ -55,36 +61,34 @@ export default class EditPopup extends React.Component {
     this.setState({ task: { ...task, description: e.target.value } });
   };
 
-  handleCardEdit = () => {
+  handleCardEdit = async () => {
     const { cardId, onClose } = this.props;
     const { task } = this.state;
 
-    fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
-      name: task.name,
-      description: task.description,
-      author_id: task.author.id,
-      assignee_id: task.assignee.id,
-      state: task.state,
-    })
-      .then(() => {
-        onClose(task.state);
-      })
-      .catch(e => {
-        alert(`Update failed! ${e.response.status} - ${e.response.statusText}`);
+    try {
+      await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+        name: task.name,
+        description: task.description,
+        author_id: task.author.id,
+        assignee_id: task.assignee.id,
+        state: task.state,
       });
+      onClose(task.state);
+    } catch (e) {
+      alert(`Update failed! ${e.response.status} - ${e.response.statusText}`);
+    }
   };
 
-  handleCardDelete = () => {
+  handleCardDelete = async () => {
     const { cardId, onClose } = this.props;
     const { task } = this.state;
 
-    fetch('DELETE', window.Routes.api_v1_task_path(cardId, { format: 'json' }))
-      .then(() => {
-        onClose(task.state);
-      })
-      .catch(e => {
-        alert(`DELETE failed! ${e.response.status} - ${e.response.statusText}`);
-      });
+    try {
+      await fetch('DELETE', window.Routes.api_v1_task_path(cardId, { format: 'json' }));
+      onClose(task.state);
+    } catch (e) {
+      alert(`DELETE failed! ${e.response.status} - ${e.response.statusText}`);
+    }
   };
 
   render() {

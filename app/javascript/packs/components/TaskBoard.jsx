@@ -49,16 +49,23 @@ export default class TaskBoard extends React.Component {
     };
   }
 
-  fetchLine = (state, page = 1) =>
-    fetch(
-      'GET',
-      window.Routes.api_v1_tasks_path({
-        q: { state_eq: state },
-        page,
-        per_page: 10,
-        format: 'json',
-      }),
-    ).then(({ data }) => data);
+  fetchLine = async (state, page = 1) => {
+    try {
+      const { data } = await fetch(
+        'GET',
+        window.Routes.api_v1_tasks_path({
+          q: { state_eq: state },
+          page,
+          per_page: 10,
+          format: 'json',
+        }),
+      );
+      return data;
+    } catch (e) {
+      console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      return null;
+    }
+  };
 
   onLaneScroll = async (requestedPage, state) => {
     const { items } = await this.fetchLine(state, requestedPage);
@@ -70,16 +77,15 @@ export default class TaskBoard extends React.Component {
     }));
   };
 
-  handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
+  handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
     const { events } = this.state;
     const event = events[targetLaneId];
 
-    fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+    await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
       task: { state_event: event },
-    }).finally(() => {
-      this.loadLine(sourceLaneId);
-      this.loadLine(targetLaneId);
     });
+    this.loadLine(sourceLaneId);
+    this.loadLine(targetLaneId);
   };
 
   handleAddShow = () => {
@@ -120,14 +126,17 @@ export default class TaskBoard extends React.Component {
   };
 
   async loadLine(state, page = 1) {
-    const data = await this.fetchLine(state, page);
-
-    this.setState(({ board }) => ({
-      board: {
-        ...board,
-        [state]: data,
-      },
-    }));
+    try {
+      const tasks = await this.fetchLine(state, page);
+      this.setState(({ board }) => ({
+        board: {
+          ...board,
+          [state]: tasks,
+        },
+      }));
+    } catch (e) {
+      console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+    }
   }
 
   generateLane(id, title) {
@@ -137,7 +146,7 @@ export default class TaskBoard extends React.Component {
     return {
       id,
       title,
-      totalCount: tasks ? tasks.meta.total_count : 'None',
+      totalCount: tasks ? tasks.meta.total_count : 0,
       cards: tasks
         ? tasks.items.map(task => ({
             ...task,
@@ -160,6 +169,7 @@ export default class TaskBoard extends React.Component {
 
   render() {
     const { addPopupShow, editPopupShow, editCardId } = this.state;
+
     return (
       <div>
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">

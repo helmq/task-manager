@@ -9,12 +9,12 @@ const LaneHeader = ({ cards, totalCount, id }) => (
 
 LaneHeader.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.object),
-  totalCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  totalCount: PropTypes.number,
   id: PropTypes.string,
 };
 LaneHeader.defaultProps = {
   cards: [],
-  totalCount: 'None',
+  totalCount: 0,
   id: '',
 };
 

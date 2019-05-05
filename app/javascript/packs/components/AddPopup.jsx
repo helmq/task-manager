@@ -23,23 +23,22 @@ export default class AddPopup extends React.Component {
     this.setState({ description: e.target.value });
   };
 
-  handleCardAdd = () => {
+  handleCardAdd = async () => {
     const { name, assignee, description } = this.state;
     const { onClose } = this.props;
 
-    fetch('POST', window.Routes.api_v1_tasks_path(), {
-      task: {
-        name,
-        description,
-        assignee_id: assignee.id,
-      },
-    })
-      .then(() => {
-        onClose(true);
-      })
-      .catch(e => {
-        alert(`${e.response.status} - ${e.response.statusText}`);
+    try {
+      await fetch('POST', window.Routes.api_v1_tasks_path(), {
+        task: {
+          name,
+          description,
+          assignee_id: assignee.id,
+        },
       });
+      onClose(true);
+    } catch (e) {
+      alert(`${e.response.status} - ${e.response.statusText}`);
+    }
   };
 
   render() {
