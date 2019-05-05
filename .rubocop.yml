@@ -56,5 +56,5 @@ Style/AsciiComments:
 Style/For:
   Enabled: false
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   Enabled: false
