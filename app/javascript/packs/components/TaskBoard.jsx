@@ -46,18 +46,20 @@ export default class TaskBoard extends React.Component {
     };
   }
 
-  fetchLine = (state, page = 1) => fetch(
-    'GET',
-    window.Routes.api_v1_tasks_path({
-      q: { state_eq: state },
-      page,
-      per_page: 10,
-      format: 'json',
-    }),
-  ).then(({ data }) => data);
+  fetchLine = (state, page = 1) =>
+    fetch(
+      'GET',
+      window.Routes.api_v1_tasks_path({
+        q: { state_eq: state },
+        page,
+        per_page: 10,
+        format: 'json',
+      }),
+    ).then(({ data }) => data);
 
   onLaneScroll = async (requestedPage, state) => {
     const { items } = await this.fetchLine(state, requestedPage);
+
     return items.map(task => ({
       ...task,
       label: task.state,
@@ -90,6 +92,7 @@ export default class TaskBoard extends React.Component {
 
   async loadLine(state, page = 1) {
     const data = await this.fetchLine(state, page);
+
     this.setState(({ board }) => ({
       board: {
         ...board,
@@ -108,10 +111,10 @@ export default class TaskBoard extends React.Component {
       totalCount: tasks ? tasks.meta.total_count : 'None',
       cards: tasks
         ? tasks.items.map(task => ({
-          ...task,
-          label: task.state,
-          title: task.name,
-        }))
+            ...task,
+            label: task.state,
+            title: task.name,
+          }))
         : [],
     };
   }

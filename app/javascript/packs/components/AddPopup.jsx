@@ -3,7 +3,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { fetch } from '../fetch';
 
-export default class EditPopup extends React.Component {
+export default class AddPopup extends React.Component {
   state = {
     name: '',
     description: '',
@@ -15,24 +15,25 @@ export default class EditPopup extends React.Component {
     },
   };
 
-  handleNameChange = (e) => {
+  handleNameChange = e => {
     this.setState({ name: e.target.value });
   };
 
-  handleDescriptionChange = (e) => {
+  handleDescriptionChange = e => {
     this.setState({ description: e.target.value });
   };
 
   handleCardAdd = () => {
     const { name, assignee, description } = this.state;
     const { onClose } = this.props;
+
     fetch('POST', window.Routes.api_v1_tasks_path(), {
       task: {
         name,
         description,
         assignee_id: assignee.id,
       },
-    }).then((response) => {
+    }).then(response => {
       if (response.statusText === 'Created') {
         onClose(true);
       } else {
@@ -44,6 +45,7 @@ export default class EditPopup extends React.Component {
   render() {
     const { show, onClose } = this.props;
     const { description, name } = this.state;
+
     return (
       <Modal show={show} onHide={onClose}>
         <Modal.Header closeButton>
@@ -84,12 +86,12 @@ export default class EditPopup extends React.Component {
   }
 }
 
-EditPopup.propTypes = {
+AddPopup.propTypes = {
   show: PropTypes.bool,
   onClose: PropTypes.func,
 };
 
-EditPopup.defaultProps = {
+AddPopup.defaultProps = {
   show: false,
   onClose: () => {},
 };

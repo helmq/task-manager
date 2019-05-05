@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 
 const LaneHeader = ({ cards, totalCount, id }) => (
   <div>
-    <b>{id}</b>
-(
-    {cards.length}
-/
-    {totalCount}
-)
+    <b>{id}</b>({cards.length}/{totalCount})
   </div>
 );
 
