@@ -5,6 +5,16 @@ env:
 
 extends:
   - airbnb
+  - prettier
+  - prettier/react
+
+plugins:
+  - react
+  - prettier
+
+rules:
+  prettier/prettier:
+    - error
 
 settings:
   import/resolver:
