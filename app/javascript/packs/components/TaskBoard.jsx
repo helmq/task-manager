@@ -105,7 +105,7 @@ export default class TaskBoard extends React.Component {
     return {
       id,
       title,
-      total_count: tasks ? tasks.meta.total_count : 'None',
+      totalCount: tasks ? tasks.meta.total_count : 'None',
       cards: tasks
         ? tasks.items.map(task => ({
           ...task,

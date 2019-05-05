@@ -43,7 +43,7 @@ export default class EditPopup extends React.Component {
 
   render() {
     const { show, onClose } = this.props;
-    const { description } = this.state;
+    const { description, name } = this.state;
     return (
       <Modal show={show} onHide={onClose}>
         <Modal.Header closeButton>
@@ -52,6 +52,15 @@ export default class EditPopup extends React.Component {
 
         <Modal.Body>
           <Form>
+            <Form.Group controlId="formTaskName">
+              <Form.Label>Task name:</Form.Label>
+              <Form.Control
+                type="text"
+                value={name}
+                placeholder="Set the name for the task"
+                onChange={this.handleNameChange}
+              />
+            </Form.Group>
             <Form.Group controlId="formTaskName">
               <Form.Label>Task description</Form.Label>
               <Form.Control
