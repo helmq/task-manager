@@ -36,13 +36,12 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'bcrypt', '~> 3.1.7'
 gem 'jquery-rails'
-gem 'less-rails' # Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem 'simple_form'
 gem 'slim-rails'
 gem 'state_machines'
 gem 'state_machines-activerecord'
-gem 'therubyracer'
-gem 'twitter-bootstrap-rails'
+gem 'sprockets-rails', :require => 'sprockets/railtie'
+gem 'bootstrap', '~> 4.3.1'
 gem 'coveralls', require: false
 gem 'rollbar'
 gem 'newrelic_rpm'
