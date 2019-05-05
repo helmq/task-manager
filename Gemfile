@@ -49,7 +49,7 @@ gem 'kaminari'
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'responders'
 gem 'active_model_serializers'
-gem 'webpacker', '~> 3.5'
+gem 'webpacker'
 gem 'webpacker-react'
 gem 'js-routes'
 
