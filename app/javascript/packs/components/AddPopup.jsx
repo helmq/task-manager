@@ -33,13 +33,13 @@ export default class AddPopup extends React.Component {
         description,
         assignee_id: assignee.id,
       },
-    }).then(response => {
-      if (response.statusText === 'Created') {
+    })
+      .then(() => {
         onClose(true);
-      } else {
-        alert(`${response.status} - ${response.statusText}`);
-      }
-    });
+      })
+      .catch(e => {
+        alert(`${e.response.status} - ${e.response.statusText}`);
+      });
   };
 
   render() {
