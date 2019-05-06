@@ -9,3 +9,12 @@ admin.save
   u.password = i.to_s
   u.save
 end
+
+30.times do |i|
+  task = Task.find_or_create_by(name: "Task #{i}")
+  task.description = "#{task.name} description"
+  task.state = %i[new_task in_development in_qa in_code_review ready_for_release released archived]
+  task.author = Manager.find(Manager.pluck(:id).sample)
+  task.assignee = Developer.find(Developer.pluck(:id).sample)
+  task.save
+end
