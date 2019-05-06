@@ -6,7 +6,7 @@ class Session
     :password
   )
 
-  validates :email, presence: true, format: { with: /\A\S+@.+\.\S+\z/ }
+  validates :email, presence: true, format: { with: /@/ }
   validates :password, presence: true
   validate :user_valid?
 
