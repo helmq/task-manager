@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, Form, Button } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { fetch } from '../fetch';
+import FormPopup from './FormPopup';
 
 export default class EditPopup extends React.Component {
   state = {
@@ -45,7 +46,11 @@ export default class EditPopup extends React.Component {
       this.setState({ task: data });
       this.setState({ isLoading: false });
     } catch (e) {
-      alert(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      if (e.response) {
+        alert(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      } else {
+        alert('No response.');
+      }
     }
   };
 
@@ -75,7 +80,11 @@ export default class EditPopup extends React.Component {
       });
       onClose(task.state);
     } catch (e) {
-      alert(`Update failed! ${e.response.status} - ${e.response.statusText}`);
+      if (e.response) {
+        alert(`Update failed! ${e.response.status} - ${e.response.statusText}`);
+      } else {
+        alert('No response.');
+      }
     }
   };
 
@@ -87,14 +96,35 @@ export default class EditPopup extends React.Component {
       await fetch('DELETE', window.Routes.api_v1_task_path(cardId, { format: 'json' }));
       onClose(task.state);
     } catch (e) {
-      alert(`DELETE failed! ${e.response.status} - ${e.response.statusText}`);
+      if (e.response) {
+        alert(`DELETE failed! ${e.response.status} - ${e.response.statusText}`);
+      } else {
+        alert('No response.');
+      }
     }
+  };
+
+  renderFooter = () => {
+    const { onClose } = this.props;
+
+    return (
+      <>
+        <Button variant="danger" onClick={this.handleCardDelete}>
+          Delete
+        </Button>
+        <Button onClick={onClose}>Close</Button>
+        <Button variant="primary" onClick={this.handleCardEdit}>
+          Save changes
+        </Button>
+      </>
+    );
   };
 
   render() {
     const { isLoading } = this.state;
     const { show, onClose } = this.props;
     const { task } = this.state;
+    const Footer = this.renderFooter();
 
     if (isLoading) {
       return (
@@ -111,49 +141,17 @@ export default class EditPopup extends React.Component {
     }
 
     return (
-      <div>
-        <Modal show={show} onHide={onClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Task #{task.id}[{task.state}]
-            </Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <form>
-              <Form.Group controlId="formTaskName">
-                <Form.Label>Task name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={task.name}
-                  placeholder="Set the name for the task"
-                  onChange={this.handleNameChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="formDescriptionName">
-                <Form.Label>Task Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  value={task.description}
-                  placeholder="Set the description for the task"
-                  onChange={this.handleDescriptionChange}
-                />
-              </Form.Group>
-            </form>
-            Author: {task.author.first_name} {task.author.last_name}
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="danger" onClick={this.handleCardDelete}>
-              Delete
-            </Button>
-            <Button onClick={onClose}>Close</Button>
-            <Button variant="primary" onClick={this.handleCardEdit}>
-              Save changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      <FormPopup
+        modalTitle="Create task"
+        show={show}
+        onClose={onClose}
+        description={task.description}
+        name={task.name}
+        onNameChange={this.handleNameChange}
+        onDescriptionChange={this.handleDescriptionChange}
+        Footer={Footer}
+        author={task.author}
+      />
     );
   }
 }

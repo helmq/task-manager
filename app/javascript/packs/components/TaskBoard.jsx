@@ -17,18 +17,19 @@ export default class TaskBoard extends React.Component {
       released: null,
       archived: null,
     },
-    events: {
-      new_task: null,
-      in_development: 'develop',
-      in_qa: 'qa',
-      in_code_review: 'review',
-      ready_for_release: 'ready',
-      released: 'release',
-      archived: 'archive',
-    },
     addPopupShow: false,
     editPopupShow: false,
     editCardId: null,
+  };
+
+  events = {
+    new_task: null,
+    in_development: 'develop',
+    in_qa: 'qa',
+    in_code_review: 'review',
+    ready_for_release: 'ready',
+    released: 'release',
+    archived: 'archive',
   };
 
   componentDidMount() {
@@ -62,7 +63,11 @@ export default class TaskBoard extends React.Component {
       );
       return data;
     } catch (e) {
-      console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      if (e.response) {
+        console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      } else {
+        console.log('No response.');
+      }
       return null;
     }
   };
@@ -78,14 +83,21 @@ export default class TaskBoard extends React.Component {
   };
 
   handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
-    const { events } = this.state;
-    const event = events[targetLaneId];
+    const event = this.events[targetLaneId];
 
-    await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
-      task: { state_event: event },
-    });
-    this.loadLine(sourceLaneId);
-    this.loadLine(targetLaneId);
+    try {
+      await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+        task: { state_event: event },
+      });
+      this.loadLine(sourceLaneId);
+      this.loadLine(targetLaneId);
+    } catch (e) {
+      if (e.response) {
+        console.log(`Updage failed! ${e.response.status} - ${e.response.statusText}`);
+      } else {
+        console.log('No response.');
+      }
+    }
   };
 
   handleAddShow = () => {
@@ -135,7 +147,11 @@ export default class TaskBoard extends React.Component {
         },
       }));
     } catch (e) {
-      console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      if (e.response) {
+        console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
+      } else {
+        console.log('No response.');
+      }
     }
   }
 

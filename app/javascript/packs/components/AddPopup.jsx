@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, Form, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { fetch } from '../fetch';
+import FormPopup from './FormPopup';
 
 export default class AddPopup extends React.Component {
   state = {
@@ -37,50 +38,43 @@ export default class AddPopup extends React.Component {
       });
       onClose(true);
     } catch (e) {
-      alert(`${e.response.status} - ${e.response.statusText}`);
+      if (e.response) {
+        alert(`${e.response.status} - ${e.response.statusText}`);
+      } else {
+        alert('No response.');
+      }
     }
+  };
+
+  renderFooter = () => {
+    const { onClose } = this.props;
+
+    return (
+      <>
+        <Button onClick={onClose}>Close</Button>
+        <Button variant="primary" onClick={this.handleCardAdd}>
+          Save changes
+        </Button>
+      </>
+    );
   };
 
   render() {
     const { show, onClose } = this.props;
     const { description, name } = this.state;
+    const Footer = this.renderFooter();
 
     return (
-      <Modal show={show} onHide={onClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>New task</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formTaskName">
-              <Form.Label>Task name:</Form.Label>
-              <Form.Control
-                type="text"
-                value={name}
-                placeholder="Set the name for the task"
-                onChange={this.handleNameChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="formTaskName">
-              <Form.Label>Task description</Form.Label>
-              <Form.Control
-                as="textarea"
-                value={description}
-                placeholder="Set the description for the task"
-                onChange={this.handleDescriptionChange}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button onClick={onClose}>Close</Button>
-          <Button variant="primary" onClick={this.handleCardAdd}>
-            Save changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <FormPopup
+        modalTitle="Create task"
+        show={show}
+        onClose={onClose}
+        description={description}
+        name={name}
+        onNameChange={this.handleNameChange}
+        onDescriptionChange={this.handleDescriptionChange}
+        Footer={Footer}
+      />
     );
   }
 }
