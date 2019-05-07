@@ -1,0 +1,14 @@
+env:
+  browser: true
+
+extends:
+  - airbnb
+
+settings:
+  import/resolver:
+    webpack:
+      config:
+        resolve:
+          extensions:
+            - .js
+            - .jsx
