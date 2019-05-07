@@ -1,10 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+<<<<<<< HEAD:app/javascript/packs/components/tasks/EditPopup.jsx
 import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
 import ModalLoading from '../modals/ModalLoading';
 import EditPopupFooter from './EditPopupFooter';
 import { fetch, handleFetchError } from '../../fetch';
+=======
+import { fetch } from '../fetch';
+import FormPopup from './FormPopup';
+import UserSelect from './UserSelect';
+>>>>>>> add feature: choose assignee:app/javascript/packs/components/EditPopup.jsx
 
 export default class EditPopup extends React.Component {
   state = {
@@ -93,6 +99,37 @@ export default class EditPopup extends React.Component {
     }
   };
 
+<<<<<<< HEAD:app/javascript/packs/components/tasks/EditPopup.jsx
+=======
+  handleAuthorChange = value => {
+    const { task } = this.state;
+
+    this.setState({ task: { ...task, author: value } });
+  };
+
+  handleAssigneeChange = value => {
+    const { task } = this.state;
+
+    this.setState({ task: { ...task, assignee: value } });
+  };
+
+  renderFooter = () => {
+    const { onClose } = this.props;
+
+    return (
+      <>
+        <Button variant="danger" onClick={this.handleCardDelete}>
+          Delete
+        </Button>
+        <Button onClick={onClose}>Close</Button>
+        <Button variant="primary" onClick={this.handleCardEdit}>
+          Save changes
+        </Button>
+      </>
+    );
+  };
+
+>>>>>>> add feature: choose assignee:app/javascript/packs/components/EditPopup.jsx
   render() {
     const { isLoading, task } = this.state;
     const { show, onClose } = this.props;
@@ -111,6 +148,7 @@ export default class EditPopup extends React.Component {
     }
 
     return (
+<<<<<<< HEAD:app/javascript/packs/components/tasks/EditPopup.jsx
       <Modal show={show} onClose={onClose} Footer={Footer} title={modalTitle}>
         <TaskForm
           description={task.description}
@@ -120,6 +158,22 @@ export default class EditPopup extends React.Component {
           author={task.author}
         />
       </Modal>
+=======
+      <FormPopup
+        modalTitle="Create task"
+        show={show}
+        onClose={onClose}
+        description={task.description}
+        name={task.name}
+        onNameChange={this.handleNameChange}
+        onDescriptionChange={this.handleDescriptionChange}
+        Footer={Footer}
+        author={task.author}
+      >
+        <UserSelect id="Author" isDisabled value={task.author} onChange={this.handleAuthorChange} />
+        <UserSelect id="Assignee" value={task.assignee} onChange={this.handleAssigneeChange} />
+      </FormPopup>
+>>>>>>> add feature: choose assignee:app/javascript/packs/components/EditPopup.jsx
     );
   }
 }
