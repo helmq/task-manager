@@ -77,9 +77,15 @@ export default class TaskBoard extends React.Component {
   handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
     const event = this.events[targetLaneId];
 
-    await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
-      task: { state_event: event },
-    });
+    try {
+      await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+        task: { state_event: event },
+      });
+    } catch (e) {
+      if (e.response) {
+        alert(`Server response: ${e.response.status} - ${e.response.statusText}`);
+      }
+    }
     this.loadLine(sourceLaneId);
     this.loadLine(targetLaneId);
   };
