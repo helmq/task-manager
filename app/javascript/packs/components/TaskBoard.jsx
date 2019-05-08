@@ -51,25 +51,17 @@ export default class TaskBoard extends React.Component {
   }
 
   fetchLine = async (state, page = 1) => {
-    try {
-      const { data } = await fetch(
-        'GET',
-        window.Routes.api_v1_tasks_path({
-          q: { state_eq: state },
-          page,
-          per_page: 10,
-          format: 'json',
-        }),
-      );
-      return data;
-    } catch (e) {
-      if (e.response) {
-        console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
-      } else {
-        console.log('No response.');
-      }
-      return null;
-    }
+    const { data } = await fetch(
+      'GET',
+      window.Routes.api_v1_tasks_path({
+        q: { state_eq: state },
+        page,
+        per_page: 10,
+        format: 'json',
+      }),
+    );
+
+    return data;
   };
 
   onLaneScroll = async (requestedPage, state) => {
@@ -85,19 +77,11 @@ export default class TaskBoard extends React.Component {
   handleDragEnd = async (cardId, sourceLaneId, targetLaneId) => {
     const event = this.events[targetLaneId];
 
-    try {
-      await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
-        task: { state_event: event },
-      });
-      this.loadLine(sourceLaneId);
-      this.loadLine(targetLaneId);
-    } catch (e) {
-      if (e.response) {
-        console.log(`Updage failed! ${e.response.status} - ${e.response.statusText}`);
-      } else {
-        console.log('No response.');
-      }
-    }
+    await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+      task: { state_event: event },
+    });
+    this.loadLine(sourceLaneId);
+    this.loadLine(targetLaneId);
   };
 
   handleAddShow = () => {
@@ -138,21 +122,14 @@ export default class TaskBoard extends React.Component {
   };
 
   async loadLine(state, page = 1) {
-    try {
-      const tasks = await this.fetchLine(state, page);
-      this.setState(({ board }) => ({
-        board: {
-          ...board,
-          [state]: tasks,
-        },
-      }));
-    } catch (e) {
-      if (e.response) {
-        console.log(`Load failed! ${e.response.status} - ${e.response.statusText}`);
-      } else {
-        console.log('No response.');
-      }
-    }
+    const tasks = await this.fetchLine(state, page);
+
+    this.setState(({ board }) => ({
+      board: {
+        ...board,
+        [state]: tasks,
+      },
+    }));
   }
 
   generateLane(id, title) {
