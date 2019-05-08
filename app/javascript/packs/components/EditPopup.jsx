@@ -1,8 +1,9 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import TaskForm from './TaskForm';
+import Modal from './Modal';
 import { fetch } from '../fetch';
-import FormPopup from './FormPopup';
 
 export default class EditPopup extends React.Component {
   state = {
@@ -104,8 +105,13 @@ export default class EditPopup extends React.Component {
     }
   };
 
-  renderFooter = () => {
+  renderModalFooter() {
+    const { isLoading } = this.state;
     const { onClose } = this.props;
+
+    if (isLoading) {
+      return <Button onClick={onClose}>Close</Button>;
+    }
 
     return (
       <>
@@ -118,40 +124,34 @@ export default class EditPopup extends React.Component {
         </Button>
       </>
     );
-  };
+  }
 
   render() {
     const { isLoading } = this.state;
     const { show, onClose } = this.props;
     const { task } = this.state;
-    const Footer = this.renderFooter();
+
+    const modalTitle = `Task #${task.id} [${task.state}]`;
+    const ModalFooter = this.renderModalFooter();
 
     if (isLoading) {
       return (
-        <Modal show={show} onHide={onClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Info</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Your task is loading. Please be patient.</Modal.Body>
-          <Modal.Footer>
-            <Button onClick={onClose}>Close</Button>
-          </Modal.Footer>
+        <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
+          <span>Your task is loading. Please be patient.</span>
         </Modal>
       );
     }
 
     return (
-      <FormPopup
-        modalTitle="Create task"
-        show={show}
-        onClose={onClose}
-        description={task.description}
-        name={task.name}
-        onNameChange={this.handleNameChange}
-        onDescriptionChange={this.handleDescriptionChange}
-        Footer={Footer}
-        author={task.author}
-      />
+      <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
+        <TaskForm
+          description={task.description}
+          name={task.name}
+          onNameChange={this.handleNameChange}
+          onDescriptionChange={this.handleDescriptionChange}
+          author={task.author}
+        />
+      </Modal>
     );
   }
 }

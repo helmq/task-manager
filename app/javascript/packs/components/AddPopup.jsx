@@ -2,7 +2,8 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { fetch } from '../fetch';
-import FormPopup from './FormPopup';
+import TaskForm from './TaskForm';
+import Modal from './Modal';
 
 export default class AddPopup extends React.Component {
   state = {
@@ -46,7 +47,7 @@ export default class AddPopup extends React.Component {
     }
   };
 
-  renderFooter = () => {
+  renderModalFooter = () => {
     const { onClose } = this.props;
 
     return (
@@ -62,19 +63,19 @@ export default class AddPopup extends React.Component {
   render() {
     const { show, onClose } = this.props;
     const { description, name } = this.state;
-    const Footer = this.renderFooter();
+
+    const ModalFooter = this.renderModalFooter();
+    const modalTitle = 'Create Task';
 
     return (
-      <FormPopup
-        modalTitle="Create task"
-        show={show}
-        onClose={onClose}
-        description={description}
-        name={name}
-        onNameChange={this.handleNameChange}
-        onDescriptionChange={this.handleDescriptionChange}
-        Footer={Footer}
-      />
+      <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
+        <TaskForm
+          description={description}
+          name={name}
+          onNameChange={this.handleNameChange}
+          onDescriptionChange={this.handleDescriptionChange}
+        />
+      </Modal>
     );
   }
 }
