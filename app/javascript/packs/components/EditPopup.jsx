@@ -105,7 +105,7 @@ export default class EditPopup extends React.Component {
     }
   };
 
-  renderModalFooter() {
+  renderModalFooter = () => {
     const { isLoading } = this.state;
     const { onClose } = this.props;
 
@@ -124,7 +124,7 @@ export default class EditPopup extends React.Component {
         </Button>
       </>
     );
-  }
+  };
 
   render() {
     const { isLoading } = this.state;

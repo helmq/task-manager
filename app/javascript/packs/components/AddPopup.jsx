@@ -37,6 +37,8 @@ export default class AddPopup extends React.Component {
           assignee_id: assignee.id,
         },
       });
+
+      this.setState({ name: '', description: '' });
       onClose(true);
     } catch (e) {
       if (e.response) {
