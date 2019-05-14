@@ -17,20 +17,14 @@ const FormPopup = ({ title, show, onClose, Footer, children }) => (
 FormPopup.propTypes = {
   title: PropTypes.string,
   show: PropTypes.bool,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
   Footer: PropTypes.element,
-  author: PropTypes.shape({
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-  }),
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
 };
 FormPopup.defaultProps = {
   title: '',
-  show: '',
-  onClose: () => {},
+  show: false,
   Footer: <></>,
-  author: null,
   children: <></>,
 };
 

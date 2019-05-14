@@ -21,3 +21,13 @@ export const fetch = (method, url, body) => {
   };
   return axios(options);
 };
+
+export const handleFetchError = (error, message) => {
+  if (error.response) {
+    const formattedMessage = message ? `${message} ` : '';
+    alert(`${formattedMessage}${error.response.status} - ${error.response.statusText}`);
+  } else {
+    alert('No response.');
+    console.log(error);
+  }
+};

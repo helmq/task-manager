@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from 'react-trello';
 import { Button } from 'react-bootstrap';
-import { fetch } from '../fetch';
+import { fetch, handleFetchError } from '../fetch';
 import LaneHeader from './LaneHeader';
 import AddPopup from './AddPopup';
 import EditPopup from './EditPopup';
@@ -82,9 +82,7 @@ export default class TaskBoard extends React.Component {
         task: { state_event: event },
       });
     } catch (e) {
-      if (e.response) {
-        alert(`Server response: ${e.response.status} - ${e.response.statusText}`);
-      }
+      handleFetchError(e);
     }
     this.loadLine(sourceLaneId);
     this.loadLine(targetLaneId);

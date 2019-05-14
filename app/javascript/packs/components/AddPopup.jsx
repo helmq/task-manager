@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { fetch } from '../fetch';
+import { fetch, handleFetchError } from '../fetch';
 import TaskForm from './TaskForm';
 import Modal from './Modal';
 
@@ -41,11 +41,7 @@ export default class AddPopup extends React.Component {
       this.setState({ name: '', description: '' });
       onClose(true);
     } catch (e) {
-      if (e.response) {
-        alert(`${e.response.status} - ${e.response.statusText}`);
-      } else {
-        alert('No response.');
-      }
+      handleFetchError(e);
     }
   };
 
@@ -84,10 +80,9 @@ export default class AddPopup extends React.Component {
 
 AddPopup.propTypes = {
   show: PropTypes.bool,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
 };
 
 AddPopup.defaultProps = {
   show: false,
-  onClose: () => {},
 };

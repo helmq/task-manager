@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import TaskForm from './TaskForm';
 import Modal from './Modal';
-import { fetch } from '../fetch';
+import ModalLoading from './ModalLoading';
+import EditPopupFooter from './EditPopupFooter';
+import { fetch, handleFetchError } from '../fetch';
 
 export default class EditPopup extends React.Component {
   state = {
@@ -47,11 +48,7 @@ export default class EditPopup extends React.Component {
       this.setState({ task: data });
       this.setState({ isLoading: false });
     } catch (e) {
-      if (e.response) {
-        alert(`Load failed! ${e.response.status} - ${e.response.statusText}`);
-      } else {
-        alert('No response.');
-      }
+      handleFetchError(e, 'Load failed!');
     }
   };
 
@@ -77,15 +74,10 @@ export default class EditPopup extends React.Component {
         description: task.description,
         author_id: task.author.id,
         assignee_id: task.assignee.id,
-        state: task.state,
       });
       onClose(task.state);
     } catch (e) {
-      if (e.response) {
-        alert(`Update failed! ${e.response.status} - ${e.response.statusText}`);
-      } else {
-        alert('No response.');
-      }
+      handleFetchError(e, 'Update failed!');
     }
   };
 
@@ -97,53 +89,29 @@ export default class EditPopup extends React.Component {
       await fetch('DELETE', window.Routes.api_v1_task_path(cardId, { format: 'json' }));
       onClose(task.state);
     } catch (e) {
-      if (e.response) {
-        alert(`DELETE failed! ${e.response.status} - ${e.response.statusText}`);
-      } else {
-        alert('No response.');
-      }
+      handleFetchError(e, 'Delete failed!');
     }
-  };
-
-  renderModalFooter = () => {
-    const { isLoading } = this.state;
-    const { onClose } = this.props;
-
-    if (isLoading) {
-      return <Button onClick={onClose}>Close</Button>;
-    }
-
-    return (
-      <>
-        <Button variant="danger" onClick={this.handleCardDelete}>
-          Delete
-        </Button>
-        <Button onClick={onClose}>Close</Button>
-        <Button variant="primary" onClick={this.handleCardEdit}>
-          Save changes
-        </Button>
-      </>
-    );
   };
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, task } = this.state;
     const { show, onClose } = this.props;
-    const { task } = this.state;
 
     const modalTitle = `Task #${task.id} [${task.state}]`;
-    const ModalFooter = this.renderModalFooter();
+    const Footer = (
+      <EditPopupFooter
+        onClose={onClose}
+        onDelete={this.handleCardDelete}
+        onEdit={this.handleCardEdit}
+      />
+    );
 
     if (isLoading) {
-      return (
-        <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
-          <span>Your task is loading. Please be patient.</span>
-        </Modal>
-      );
+      return <ModalLoading onClose={onClose} modalTitle={modalTitle} show={show} />;
     }
 
     return (
-      <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
+      <Modal show={show} onClose={onClose} Footer={Footer} title={modalTitle}>
         <TaskForm
           description={task.description}
           name={task.name}
@@ -158,12 +126,11 @@ export default class EditPopup extends React.Component {
 
 EditPopup.propTypes = {
   cardId: PropTypes.string,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func.isRequired,
   show: PropTypes.bool,
 };
 
 EditPopup.defaultProps = {
-  cardId: '1',
-  onClose: () => {},
+  cardId: null,
   show: false,
 };
