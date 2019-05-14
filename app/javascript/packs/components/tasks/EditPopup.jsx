@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TaskForm from './TaskForm';
-import Modal from './Modal';
-import ModalLoading from './ModalLoading';
+import TaskForm from './forms/TaskForm';
+import Modal from '../modals/Modal';
+import ModalLoading from '../modals/ModalLoading';
 import EditPopupFooter from './EditPopupFooter';
-import { fetch, handleFetchError } from '../fetch';
+import { fetch, handleFetchError } from '../../fetch';
 
 export default class EditPopup extends React.Component {
   state = {

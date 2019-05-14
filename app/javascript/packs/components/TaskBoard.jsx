@@ -3,8 +3,8 @@ import Board from 'react-trello';
 import { Button } from 'react-bootstrap';
 import { fetch, handleFetchError } from '../fetch';
 import LaneHeader from './LaneHeader';
-import AddPopup from './AddPopup';
-import EditPopup from './EditPopup';
+import AddPopup from './tasks/AddPopup';
+import EditPopup from './tasks/EditPopup';
 
 export default class TaskBoard extends React.Component {
   state = {

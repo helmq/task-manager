@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { fetch, handleFetchError } from '../fetch';
-import TaskForm from './TaskForm';
-import Modal from './Modal';
+import { fetch, handleFetchError } from '../../fetch';
+import TaskForm from './forms/TaskForm';
+import Modal from '../modals/Modal';
 
 export default class AddPopup extends React.Component {
   state = {
