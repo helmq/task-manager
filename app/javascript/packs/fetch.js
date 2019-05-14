@@ -28,6 +28,5 @@ export const handleFetchError = (error, message) => {
     alert(`${formattedMessage}${error.response.status} - ${error.response.statusText}`);
   } else {
     alert('No response.');
-    console.log(error);
   }
 };
