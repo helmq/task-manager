@@ -1,31 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import { Modal as BootstrapModal } from 'react-bootstrap';
 
-const FormPopup = ({ title, show, onClose, Footer, children }) => (
-  <Modal show={show} onHide={onClose}>
-    <Modal.Header closeButton>
-      <Modal.Title>{title}</Modal.Title>
-    </Modal.Header>
+const Modal = ({ title, show, onClose, Footer, children }) => (
+  <BootstrapModal show={show} onHide={onClose}>
+    <BootstrapModal.Header closeButton>
+      <BootstrapModal.Title>{title}</BootstrapModal.Title>
+    </BootstrapModal.Header>
 
-    <Modal.Body>{children}</Modal.Body>
+    <BootstrapModal.Body>{children}</BootstrapModal.Body>
 
-    <Modal.Footer>{Footer}</Modal.Footer>
-  </Modal>
+    <BootstrapModal.Footer>{Footer}</BootstrapModal.Footer>
+  </BootstrapModal>
 );
 
-FormPopup.propTypes = {
+Modal.propTypes = {
   title: PropTypes.string,
   show: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   Footer: PropTypes.element,
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
 };
-FormPopup.defaultProps = {
+Modal.defaultProps = {
   title: '',
   show: false,
   Footer: <></>,
   children: <></>,
 };
 
-export default FormPopup;
+export default Modal;

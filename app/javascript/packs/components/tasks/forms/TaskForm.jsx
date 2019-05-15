@@ -4,10 +4,11 @@ import { Form } from 'react-bootstrap';
 import FormControl from './FormControl';
 
 const renderChildren = children => {
-  if (children instanceof Array) {
-    return React.Children.map(children, child => <Form.Group>{child}</Form.Group>);
+  if (children === null) {
+    return children;
   }
-  return <Form.Group>{children}</Form.Group>;
+
+  return React.Children.map(children, child => <Form.Group>{child}</Form.Group>);
 };
 
 const TaskForm = ({ name, description, onNameChange, onDescriptionChange, author, children }) => (
@@ -44,7 +45,7 @@ TaskForm.defaultProps = {
   name: '',
   description: '',
   author: null,
-  children: <></>,
+  children: null,
 };
 
 export default TaskForm;
