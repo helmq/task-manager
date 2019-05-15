@@ -4,7 +4,7 @@ import { fetch, handleFetchError } from '../../fetch';
 import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
 import AddPopupFooter from './AddPopupFooter';
-import UserSelect from '../UserSelect';
+import UserSelect from './forms/UserSelect';
 
 export default class AddPopup extends React.Component {
   state = {

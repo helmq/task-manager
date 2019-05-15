@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
-import { fetch } from '../fetch';
+import { fetch } from '../../../fetch';
 
 export default class UserSelect extends Component {
   componentDidMount() {

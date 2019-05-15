@@ -4,7 +4,7 @@ import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
 import ModalLoading from '../modals/ModalLoading';
 import EditPopupFooter from './EditPopupFooter';
-import UserSelect from '../UserSelect';
+import UserSelect from './forms/UserSelect';
 import { fetch, handleFetchError } from '../../fetch';
 
 export default class EditPopup extends React.Component {
