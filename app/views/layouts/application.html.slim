@@ -8,39 +8,38 @@ html lang="en"
     = csrf_meta_tags
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "application"
-    = javascript_pack_tag "application"
 
   body
-  .navbar.navbar-default.navbar-static-top
-    .container
-      .row
-        button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse"
-          span.icon-bar
-          span.icon-bar
-          span.icon-bar
-        .col-lg-9
+    nav.navbar.navbar-expand-lg.bg-light.navbar-light.sticky-top
+      .container
+        .row
           a.navbar-brand href=root_path Task Manager
           - if current_user
-            .navbar-collapse.collapse.navbar-responsive-collapse
-              ul.nav.navbar-nav
-                li= link_to "Board", root_path
+            .navbar-collapse.collapse
+              ul.navbar-nav
+                li.nav-item
+                  = link_to "Board", root_path, class: "nav-link"
                 - if current_user.is_a? Admin
-                  li= link_to "Admin page", admin_users_url
+                  li.nav-item
+                    = link_to "Admin page", admin_users_url, class: "nav-link"
         .col-lg-3
-          ul.nav.navbar-nav
-            -if current_user
-              li= current_user.name
-              li= link_to "Log out", session_path, method: "delete"
-            -else
-              li= link_to "Sign in", new_session_path
-              li= link_to "Sign up", new_developer_path
+          ul.navbar-nav
+            - if current_user
+              li.nav-item
+                = link_to current_user.name, admin_user_url(current_user), class: "nav-link"
+              li.nav-item
+                = link_to "Log out", session_path, method: "delete", class: "nav-link"
+            - else
+              li.nav-item
+                = link_to "Sign in", new_session_path, class: "nav-link"
+              li.nav-item
+                = link_to "Sign up", new_developer_path, class: "nav-link"
 
-  .container
-    .row
-      .col-lg-12
-        = bootstrap_flash
-        = yield
+    .container
+      .row
+        .col-lg-12
+          = yield
 
-    footer
-      p
-      p &copy; Company 2018
+      footer
+        p.mt-3.d-flex.justify-content-center &copy; Company 2018
+  = javascript_pack_tag "application"
