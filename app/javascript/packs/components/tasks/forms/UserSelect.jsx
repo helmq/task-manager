@@ -36,20 +36,18 @@ export default class UserSelect extends Component {
     const { isDisabled, value, onChange, placeholder } = this.props;
 
     return (
-      <div>
-        <AsyncSelect
-          cacheOptions
-          loadOptions={this.loadOptions}
-          defaultOptions
-          onInputChange={this.handleInputChange}
-          getOptionLabel={this.getOptionLabel}
-          getOptionValue={this.getOptionValue}
-          isDisabled={isDisabled}
-          defaultValue={value}
-          onChange={onChange}
-          placeholder={placeholder}
-        />
-      </div>
+      <AsyncSelect
+        cacheOptions
+        loadOptions={this.loadOptions}
+        defaultOptions
+        onInputChange={this.handleInputChange}
+        getOptionLabel={this.getOptionLabel}
+        getOptionValue={this.getOptionValue}
+        isDisabled={isDisabled}
+        defaultValue={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
     );
   }
 }
