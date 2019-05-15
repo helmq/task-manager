@@ -56,14 +56,13 @@ export default class UserSelect extends Component {
 
 UserSelect.propTypes = {
   isDisabled: PropTypes.bool,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   value: PropTypes.objectOf(PropTypes.string),
   placeholder: PropTypes.string,
 };
 
 UserSelect.defaultProps = {
   isDisabled: false,
-  onChange: () => {},
   value: null,
   placeholder: '',
 };

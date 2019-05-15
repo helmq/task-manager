@@ -1,15 +1,10 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-<<<<<<< HEAD:app/javascript/packs/components/tasks/AddPopup.jsx
 import { fetch, handleFetchError } from '../../fetch';
 import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
-=======
-import { fetch } from '../fetch';
-import FormPopup from './FormPopup';
-import UserSelect from './UserSelect';
->>>>>>> add feature: choose assignee:app/javascript/packs/components/AddPopup.jsx
+import AddPopupFooter from './AddPopupFooter';
+import UserSelect from '../UserSelect';
 
 export default class AddPopup extends React.Component {
   state = {
@@ -51,60 +46,28 @@ export default class AddPopup extends React.Component {
     }
   };
 
-<<<<<<< HEAD:app/javascript/packs/components/tasks/AddPopup.jsx
-  renderModalFooter = () => {
-=======
   handleAssigneeChange = value => {
     this.setState({ assignee: value });
   };
 
-  renderFooter() {
->>>>>>> add feature: choose assignee:app/javascript/packs/components/AddPopup.jsx
-    const { onClose } = this.props;
-
-    return (
-      <>
-        <Button onClick={onClose}>Close</Button>
-        <Button variant="primary" onClick={this.handleCardAdd}>
-          Save changes
-        </Button>
-      </>
-    );
-  }
-
   render() {
     const { show, onClose } = this.props;
     const { description, name } = this.state;
-<<<<<<< HEAD:app/javascript/packs/components/tasks/AddPopup.jsx
 
-    const ModalFooter = this.renderModalFooter();
     const modalTitle = 'Create Task';
+    const Footer = <AddPopupFooter onClose={onClose} onSave={this.handleCardAdd} />;
 
     return (
-      <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
+      <Modal show={show} onClose={onClose} Footer={Footer} title={modalTitle}>
         <TaskForm
           description={description}
           name={name}
           onNameChange={this.handleNameChange}
           onDescriptionChange={this.handleDescriptionChange}
-        />
+        >
+          <UserSelect id="Assignee" onChange={this.handleAssigneeChange} placeholder="Assignee" />
+        </TaskForm>
       </Modal>
-=======
-
-    return (
-      <FormPopup
-        modalTitle="Create task"
-        show={show}
-        onClose={onClose}
-        description={description}
-        name={name}
-        onNameChange={this.handleNameChange}
-        onDescriptionChange={this.handleDescriptionChange}
-        Footer={this.renderFooter()}
-      >
-        <UserSelect id="Assignee" onChange={this.handleAssigneeChange} placeholder="Assignee" />
-      </FormPopup>
->>>>>>> add feature: choose assignee:app/javascript/packs/components/AddPopup.jsx
     );
   }
 }

@@ -2,6 +2,6 @@
 //= require jquery_ujs
 //= require popper
 //= require bootstrap-sprockets
-//= require js-routes
+//= require routes
 
 $.extend(window, Routes);
