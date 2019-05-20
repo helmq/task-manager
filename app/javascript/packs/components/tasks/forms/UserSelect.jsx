@@ -19,18 +19,11 @@ export default class UserSelect extends Component {
     return data.items;
   };
 
-  handleInputChange = inputValue => {
-    const newValue = inputValue.replace(/\W/g, '');
-    return newValue;
-  };
+  handleInputChange = inputValue => inputValue.replace(/\W/g, '');
 
-  getOptionValue = option => {
-    return option.id;
-  };
+  getOptionValue = ({ id }) => id;
 
-  getOptionLabel = option => {
-    return `${option.first_name} ${option.last_name}`;
-  };
+  getOptionLabel = option => `${option.first_name} ${option.last_name}`;
 
   render() {
     const { isDisabled, value, onChange, placeholder } = this.props;
