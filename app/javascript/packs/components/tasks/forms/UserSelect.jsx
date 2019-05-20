@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AsyncSelect from 'react-select/lib/Async';
+import routes from 'routes';
 import PropTypes from 'prop-types';
 import { fetch } from '../../../fetch';
 
@@ -11,7 +12,7 @@ export default class UserSelect extends Component {
   loadOptions = async inputValue => {
     const { data } = await fetch(
       'GET',
-      window.Routes.api_v1_users_path({
+      routes.api_v1_users_path({
         q: { first_name_or_last_name_cont: inputValue },
         format: 'json',
       }),

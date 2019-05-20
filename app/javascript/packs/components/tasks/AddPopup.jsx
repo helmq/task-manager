@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import routes from 'routes';
 import { fetch, handleFetchError } from '../../fetch';
 import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
@@ -31,7 +32,7 @@ export default class AddPopup extends React.Component {
     const { onClose } = this.props;
 
     try {
-      await fetch('POST', window.Routes.api_v1_tasks_path(), {
+      await fetch('POST', routes.api_v1_tasks_path(), {
         task: {
           name,
           description,

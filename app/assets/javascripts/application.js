@@ -3,5 +3,3 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require routes
-
-$.extend(window, Routes);
