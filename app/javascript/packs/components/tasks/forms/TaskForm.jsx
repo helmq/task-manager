@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import FormControl from './FormControl';
 
-const renderChildren = children => {
-  if (children === null) {
-    return children;
-  }
-
-  return React.Children.map(children, child => <Form.Group>{child}</Form.Group>);
-};
+const renderChildren = children =>
+  React.Children.map(children, child => <Form.Group>{child}</Form.Group>);
 
 const TaskForm = ({ name, description, onNameChange, onDescriptionChange, author, children }) => (
   <Form>
