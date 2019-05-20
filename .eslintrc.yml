@@ -19,8 +19,4 @@ rules:
 settings:
   import/resolver:
     webpack:
-      config:
-        resolve:
-          extensions:
-            - .js
-            - .jsx
+      config: 'config/webpack/development.js'

@@ -1,6 +1,7 @@
 import React from 'react';
 import Board from 'react-trello';
 import { Button } from 'react-bootstrap';
+import routes from 'routes';
 import { fetch, handleFetchError } from '../fetch';
 import LaneHeader from './LaneHeader';
 import AddPopup from './tasks/AddPopup';
@@ -53,7 +54,7 @@ export default class TaskBoard extends React.Component {
   fetchLine = async (state, page = 1) => {
     const { data } = await fetch(
       'GET',
-      window.Routes.api_v1_tasks_path({
+      routes.api_v1_tasks_path({
         q: { state_eq: state },
         page,
         per_page: 10,
@@ -78,7 +79,7 @@ export default class TaskBoard extends React.Component {
     const event = this.events[targetLaneId];
 
     try {
-      await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+      await fetch('PUT', routes.api_v1_task_path(cardId, { format: 'json' }), {
         task: { state_event: event },
       });
     } catch (e) {

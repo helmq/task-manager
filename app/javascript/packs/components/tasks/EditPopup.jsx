@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import routes from 'routes';
 import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
 import ModalLoading from '../modals/ModalLoading';
 import EditPopupFooter from './EditPopupFooter';
+import UserSelect from './forms/UserSelect';
 import { fetch, handleFetchError } from '../../fetch';
 
 export default class EditPopup extends React.Component {
@@ -41,10 +43,7 @@ export default class EditPopup extends React.Component {
     this.setState({ isLoading: true });
 
     try {
-      const { data } = await fetch(
-        'GET',
-        window.Routes.api_v1_task_path(cardId, { format: 'json' }),
-      );
+      const { data } = await fetch('GET', routes.api_v1_task_path(cardId, { format: 'json' }));
       this.setState({ task: data });
       this.setState({ isLoading: false });
     } catch (e) {
@@ -69,7 +68,7 @@ export default class EditPopup extends React.Component {
     const { task } = this.state;
 
     try {
-      await fetch('PUT', window.Routes.api_v1_task_path(cardId, { format: 'json' }), {
+      await fetch('PUT', routes.api_v1_task_path(cardId, { format: 'json' }), {
         name: task.name,
         description: task.description,
         author_id: task.author.id,
@@ -86,11 +85,23 @@ export default class EditPopup extends React.Component {
     const { task } = this.state;
 
     try {
-      await fetch('DELETE', window.Routes.api_v1_task_path(cardId, { format: 'json' }));
+      await fetch('DELETE', routes.api_v1_task_path(cardId, { format: 'json' }));
       onClose(task.state);
     } catch (e) {
       handleFetchError(e, 'Delete failed!');
     }
+  };
+
+  handleAuthorChange = value => {
+    const { task } = this.state;
+
+    this.setState({ task: { ...task, author: value } });
+  };
+
+  handleAssigneeChange = value => {
+    const { task } = this.state;
+
+    this.setState({ task: { ...task, assignee: value } });
   };
 
   render() {
@@ -118,7 +129,15 @@ export default class EditPopup extends React.Component {
           onNameChange={this.handleNameChange}
           onDescriptionChange={this.handleDescriptionChange}
           author={task.author}
-        />
+        >
+          <UserSelect
+            id="Author"
+            isDisabled
+            value={task.author}
+            onChange={this.handleAuthorChange}
+          />
+          <UserSelect id="Assignee" value={task.assignee} onChange={this.handleAssigneeChange} />
+        </TaskForm>
       </Modal>
     );
   }

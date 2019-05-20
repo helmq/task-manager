@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import FormControl from './FormControl';
 
-const TaskForm = ({ name, description, onNameChange, onDescriptionChange, author }) => (
+const renderChildren = children =>
+  React.Children.map(children, child => <Form.Group>{child}</Form.Group>);
+
+const TaskForm = ({ name, description, onNameChange, onDescriptionChange, author, children }) => (
   <Form>
     <FormControl
       controlId="formTaskName"
@@ -20,6 +23,7 @@ const TaskForm = ({ name, description, onNameChange, onDescriptionChange, author
       onChange={onDescriptionChange}
       as="textarea"
     />
+    {renderChildren(children)}
     {author && `Author: ${author.first_name} ${author.last_name}`}
   </Form>
 );
@@ -29,15 +33,14 @@ TaskForm.propTypes = {
   description: PropTypes.string,
   onNameChange: PropTypes.func.isRequired,
   onDescriptionChange: PropTypes.func.isRequired,
-  author: PropTypes.shape({
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-  }),
+  author: PropTypes.objectOf(PropTypes.string),
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
 };
 TaskForm.defaultProps = {
   name: '',
   description: '',
   author: null,
+  children: null,
 };
 
 export default TaskForm;

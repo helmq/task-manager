@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import routes from 'routes';
 import { fetch, handleFetchError } from '../../fetch';
 import TaskForm from './forms/TaskForm';
 import Modal from '../modals/Modal';
+import AddPopupFooter from './AddPopupFooter';
+import UserSelect from './forms/UserSelect';
 
 export default class AddPopup extends React.Component {
   state = {
@@ -30,7 +32,7 @@ export default class AddPopup extends React.Component {
     const { onClose } = this.props;
 
     try {
-      await fetch('POST', window.Routes.api_v1_tasks_path(), {
+      await fetch('POST', routes.api_v1_tasks_path(), {
         task: {
           name,
           description,
@@ -45,34 +47,27 @@ export default class AddPopup extends React.Component {
     }
   };
 
-  renderModalFooter = () => {
-    const { onClose } = this.props;
-
-    return (
-      <>
-        <Button onClick={onClose}>Close</Button>
-        <Button variant="primary" onClick={this.handleCardAdd}>
-          Save changes
-        </Button>
-      </>
-    );
+  handleAssigneeChange = value => {
+    this.setState({ assignee: value });
   };
 
   render() {
     const { show, onClose } = this.props;
     const { description, name } = this.state;
 
-    const ModalFooter = this.renderModalFooter();
     const modalTitle = 'Create Task';
+    const Footer = <AddPopupFooter onClose={onClose} onSave={this.handleCardAdd} />;
 
     return (
-      <Modal show={show} onClose={onClose} Footer={ModalFooter} title={modalTitle}>
+      <Modal show={show} onClose={onClose} Footer={Footer} title={modalTitle}>
         <TaskForm
           description={description}
           name={name}
           onNameChange={this.handleNameChange}
           onDescriptionChange={this.handleDescriptionChange}
-        />
+        >
+          <UserSelect id="Assignee" onChange={this.handleAssigneeChange} placeholder="Assignee" />
+        </TaskForm>
       </Modal>
     );
   }
