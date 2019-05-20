@@ -1,0 +1,7 @@
+.row.h-100
+  .col-lg-3
+    h3.mt-3 Log in
+    = simple_form_for @session, url: session_path do |f|
+      = f.input :email
+      = f.input :password
+      = f.button :submit, 'Sign in', class: "btn-success"
